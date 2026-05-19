@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculus in Animal Husbandry: Kedah-Kelantan Cattle Growth</title>
+    <!-- Tailwind CSS for sleek, modern styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Chart.js for smooth, animated graphing -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        
+        <!-- Header Section -->
+        <header class="bg-gradient-to-r from-emerald-600 to-teal-700 p-6 md:p-8 text-white">
+            <span class="bg-emerald-500/30 text-emerald-100 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-emerald-400/20">
+                SFH: Animal Husbandry Technology Application
+            </span>
+            <h1 class="text-2xl md:text-4xl font-extrabold mt-2">Optimizing Kedah-Kelantan (KK) Cattle Growth Rates</h1>
+            <p class="text-emerald-100/90 mt-2 text-sm md:text-base max-w-3xl">
+                Leveraging calculus to pinpoint the exact moment of maximum growth acceleration in indigenous Malaysian beef cattle to optimize feeding strategies.
+            </p>
+        </header>
+
+        <div class="p-6 md:p-8 space-y-8">
+            
+            <!-- Bioscience Scenario & Math Formulas -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Scenario Box -->
+                <div class="bg-emerald-50/50 p-5 rounded-xl border border-emerald-100">
+                    <h2 class="text-lg font-bold text-emerald-900 mb-2">The Bioscience Scenario</h2>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        In Malaysian beef production, managing **Kedah-Kelantan (KK) cattle** efficiently requires understanding their growth velocity. While tracking absolute weight $f(x)$ is important, animal scientists rely on the **derivative $f'(x)$**—representing the <em>Average Daily Gain (ADG)</em>—to determine when the animal is growing most efficiently and when growth begins to plateau, signalling the optimal market or dietary adjustment window.
+                    </p>
+                    <div class="mt-3 pt-3 border-t border-emerald-100 text-xs text-gray-500">
+                        <strong>Data Reference:</strong> Growth models adapted from parameters found in the <em>Malaysian Journal of Animal Science (MJAS)</em> and MARDI research papers on KK Cattle growth curves.
+                    </div>
+                </div>
+
+                <!-- Math Box -->
+                <div class="bg-slate-900 text-slate-100 p-5 rounded-xl flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold text-teal-400 mb-3">Mathematical Modeling</h2>
+                        
+                        <!-- Weight Formula -->
+                        <div class="mb-4">
+                            <span class="text-xs uppercase text-slate-400 block font-semibold tracking-wider">Growth Function (Weight)</span>
+                            <div class="text-sm md:text-base font-mono bg-slate-800/80 p-2 rounded border border-slate-700 mt-1">
+                                f(x) = -0.0004x³ + 0.036x² + 0.15x + 25
+                            </div>
+                            <span class="text-xs text-slate-400 mt-1 block">Where <strong>x</strong> = age in weeks, <strong>f(x)</strong> = weight in kg (Birth weight ≈ 25kg).</span>
+                        </div>
+
+                        <!-- Derivative Formula -->
+                        <div>
+                            <span class="text-xs uppercase text-slate-400 block font-semibold tracking-wider">Derivative Function (Growth Rate / ADG)</span>
+                            <div class="text-sm md:text-base font-mono bg-slate-800/80 p-2 rounded border border-teal-900/50 text-teal-300 mt-1">
+                                f'(x) = -0.0012x² + 0.072x + 0.15
+                            </div>
+                            <span class="text-xs text-slate-400 mt-1 block">Where <strong>f'(x)</strong> = rate of weight gain (kg / week).</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-gray-200">
+
+            <!-- Interactive Chart Area -->
+            <div>
+                <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-xl font-bold text-gray-900">Interactive Bio-Calculus Graph</h2>
+                        <p class="text-xs text-gray-500">Click anywhere on the blue curve line to run a derivative calculation at that specific week.</p>
+                    </div>
+                    <!-- Legend badge -->
+                    <div class="mt-2 md:mt-0 flex gap-2 text-xs font-semibold">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">
+                          <span class="w-2 h-2 mr-1.5 bg-blue-500 rounded-full"></span> Weight Curve f(x)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Chart Container -->
+                <div class="relative bg-gray-50 p-2 md:p-4 rounded-xl border border-gray-200 h-96">
+                    <canvas id="growthChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Dynamic Result Display Panel -->
+            <div id="resultPanel" class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5 hidden transition-all duration-300">
+                <div class="flex items-start gap-4">
+                    <div class="bg-blue-600 text-white rounded-lg p-3 text-center min-w-[70px]">
+                        <span class="text-xs block uppercase font-semibold">Week</span>
+                        <span id="resWeek" class="text-2xl font-black">20</span>
+                    </div>
+                    <div class="flex-1 space-y-1">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-blue-900">Derivative Calculation Analysis</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 my-2 text-sm">
+                            <div><strong class="text-gray-600">Current Weight f(x):</strong> <span id="resWeight" class="font-bold text-gray-900">--</span> kg</div>
+                            <div><strong class="text-gray-600">Growth Velocity f'(x):</strong> <span id="resRate" class="font-bold text-emerald-600">--</span> kg/week</div>
+                        </div>
+                        <p id="resExplanation" class="text-gray-700 text-sm bg-white/80 p-3 rounded-lg border border-blue-100 italic">
+                            Select a point on the graph to generate the bio-technological analysis.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Default instructional prompt if no point is selected -->
+            <div id="promptPanel" class="text-center py-6 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 text-sm">
+                💡 Click on any point along the line chart curve to analyze the instantaneous growth rate!
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <footer class="bg-gray-100 px-6 py-4 text-xs text-gray-500 text-center border-t border-gray-200">
+            Designed for SFH Animal Husbandry Technology Students • Powered by Chart.js & Calculus
+        </footer>
+    </div>
+
+    <!-- Application Logic Script -->
+    <script>
+        // 1. Math functions defining our bioscience model
+        // f(x) = -0.0004x^3 + 0.036x^2 + 0.15x + 25
+        function getWeight(x) {
+            return (-0.0004 * Math.pow(x, 3)) + (0.036 * Math.pow(x, 2)) + (0.15 * x) + 25;
+        }
+
+        // f'(x) = -0.0012x^2 + 0.072x + 0.15
+        function getGrowthRate(x) {
+            return (-0.0012 * Math.pow(x, 2)) + (0.072 * x) + 0.15;
+        }
+
+        // 2. Generate data points for a standard 60-week KK Cattle rearing cycle
+        const weeks = Array.from({length: 61}, (_, i) => i);
+        const weightData = weeks.map(w => getWeight(w).toFixed(1));
+
+        // 3. Initialize Chart.js
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: weeks,
+                datasets: [{
+                    label: 'Cattle Weight f(x) (kg)',
+                    data: weightData,
+                    borderColor: '#2563eb', // blue-600
+                    backgroundColor: 'rgba(37, 99, 235, 0.05)',
+                    borderWidth: 3,
+                    tension: 0.3,
+                    fill: true,
+                    pointRadius: 2,
+                    pointHoverRadius: 7,
+                    pointHoverBackgroundColor: '#ef4444', // red-500 highlight on hover
+                    pointHoverBorderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Animal Age (Weeks)', font: { weight: 'bold' } },
+                        grid: { display: false }
+                    },
+                    y: {
+                        title: { display: true, text: 'Weight (kg)', font: { weight: 'bold' } },
+                        min: 0,
+                        max: 120
+                    }
+                },
+                // Trigger action when user clicks anywhere on the graph area
+                onClick: (e, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const selectedWeek = weeks[index];
+                        calculateDerivativeAtPoint(selectedWeek);
+                    }
+                },
+                // Visual layout animation configs
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                }
+            }
+        });
+
+        // 4. Calculate derivative and generate biological insight based on the point clicked
+        function calculateDerivativeAtPoint(week) {
+            const weight = getWeight(week);
+            const ratePerWeek = getGrowthRate(week); // kg per week
+            const adg = (ratePerWeek / 7) * 1000;    // Convert to Average Daily Gain in grams
+
+            // Update UI elements
+            document.getElementById('resWeek').innerText = week;
+            document.getElementById('resWeight').innerText = weight.toFixed(1);
+            
+            // Format rate output string
+            document.getElementById('resRate').innerText = `+${ratePerWeek.toFixed(2)} kg/wk (~${adg.toFixed(0)}g/day)`;
+
+            // Generate Layman & Bioscience explanation based on mathematical context
+            let explanation = "";
+            
+            if (week <= 10) {
+                explanation = `🍼 **Early Growth Phase:** At week ${week}, the calf's derivative ($f'(x)$) is positive and rising. The animal is adapting well to post-weaning and starting its accelerated lean muscle deposition phase. Food-to-mass conversion efficiency is very high right now.`;
+            } else if (week > 10 && week <= 30) {
+                explanation = `⚡ **Peak Metabolism (Inflection Zone):** At week ${week}, the derivative reaches its highest values ($f'(x)$ is near maximum). This means the cattle is growing at its *fastest possible speed*. In livestock technology, this is your optimal feeding window—keep nutrition quality high because the animal's biology is turning feed into beef at maximum efficiency.`;
+            } else if (week > 30 && week <= 50) {
+                explanation = `📉 **Diminishing Growth Returns:** At week ${week}, the derivative ($f'(x)$) is still positive, but the value is dropping. This shows that while the animal is still gaining weight, the *rate* of gain has slowed down. It's moving from muscle development towards fat deposition.`;
+            } else {
+                explanation = `🥩 **Market Maturity Plateau:** At week ${week}, $f'(x)$ has dropped significantly. The animal is nearing genetic maturity for KK Cattle. Continuing to feed expensive concentrates here yields minor weight changes, meaning keeping them longer reduces profit margins. It's time for processing!`;
+            }
+
+            document.getElementById('resExplanation').innerHTML = explanation;
+
+            // Toggle UI panels visibility smoothly
+            document.getElementById('promptPanel').classList.add('hidden');
+            const resultPanel = document.getElementById('resultPanel');
+            resultPanel.classList.remove('hidden');
+            resultPanel.classList.add('animate-fade-in');
+        }
+    </script>
+</body>
+</html>
